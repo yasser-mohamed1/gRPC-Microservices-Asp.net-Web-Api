@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "InventoryService.Protos";
+
+service InventoryService {
+    rpc DeductItemsBalance (DeductItemsRequest) returns (DeductItemsResponse);
+}
+
+message DeductItemsRequest {
+    repeated Item items = 1;
+}
+
+message DeductItemsResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message Item {
+    string itemId = 1;
+    int32 quantity = 2;
+}
