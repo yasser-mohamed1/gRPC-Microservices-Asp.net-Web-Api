@@ -7,20 +7,34 @@ namespace OrderingService
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenLocalhost(5270, listenOptions =>
+                {
+                    listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+                });
+                options.ListenLocalhost(7153, listenOptions =>
+                {
+                    listenOptions.UseHttps();
+                    listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
+                });
+            });
+
             // Add services to the container.
 
             builder.Services.AddControllers();
-            //builder.Services.AddGrpcClient<PaymentService.PaymentServiceClient>(o =>
-            //{
-            //    o.Address = new Uri("http://localhost:5001");
-            //});
-            //builder.Services.AddGrpcClient<InventoryService.InventoryServiceClient>(o =>
-            //{
-            //    o.Address = new Uri("http://localhost:5002");
-            //});
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddGrpc();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
 
             var app = builder.Build();
 
@@ -31,11 +45,14 @@ namespace OrderingService
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapGrpcService<OrderingService.Services.OrderingGrpcService>();
 
             app.Run();
         }

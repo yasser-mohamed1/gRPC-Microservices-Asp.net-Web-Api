@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Order Service Client</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div style="max-width: 600px; margin: 40px auto; padding: 20px; border: 1px solid #ccc; font-family: sans-serif;">
+        <h1 style="margin-top: 0;">Submit Order (gRPC)</h1>
+        <p style="color: #666;">Connects to the Order Service via gRPC backend communication.</p>
+        <hr>
+
+        <h3>1. Service Settings</h3>
+        <div class="form-group">
+            <label for="grpc-endpoint">gRPC Server Address:</label>
+            <input type="text" id="grpc-endpoint" value="localhost:5270" style="width: 100%; padding: 8px; margin: 5px 0 15px 0;">
+            <small style="color: #888; display: block; margin-top: -10px; margin-bottom: 15px;">Use `localhost:5270` (HTTP, recommended for local dev) or `localhost:7153` (HTTPS).</small>
+        </div>
+
+        <div class="form-group">
+            <label for="user-id">User ID:</label>
+            <input type="number" id="user-id" value="1" style="width: 100%; padding: 8px; margin: 5px 0 15px 0;">
+        </div>
+
+        <h3>2. Choose Items</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr style="border-bottom: 2px solid #ddd; text-align: left;">
+                    <th style="padding: 8px;">Product</th>
+                    <th style="padding: 8px;">Price</th>
+                    <th style="padding: 8px; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">Quantum Laptop</td>
+                    <td style="padding: 8px;">$1200</td>
+                    <td style="padding: 8px; text-align: center;">
+                        <button onclick="addItem('LAP-01', 'Quantum Laptop', 1200)">Add</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">Vortex Phone</td>
+                    <td style="padding: 8px;">$800</td>
+                    <td style="padding: 8px; text-align: center;">
+                        <button onclick="addItem('PHN-02', 'Vortex Phone', 800)">Add</button>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px;">AeroBuds Pro</td>
+                    <td style="padding: 8px;">$150</td>
+                    <td style="padding: 8px; text-align: center;">
+                        <button onclick="addItem('BUD-03', 'AeroBuds Pro', 150)">Add</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>3. Shopping Cart</h3>
+        <div id="cart-items" style="border: 1px solid #eee; padding: 15px; background: #fafafa; margin-bottom: 20px;">
+            <p style="margin: 0; color: #999;" id="empty-cart-msg">No items added yet.</p>
+            <ul id="cart-list" style="margin: 0; padding-left: 20px; display: none;"></ul>
+            <p style="margin: 15px 0 0 0; font-weight: bold; text-align: right;">Total Price: $<span id="total-price">0</span></p>
+        </div>
+
+        <button id="btn-submit" style="width: 100%; padding: 12px; font-size: 16px; font-weight: bold; background: #007bff; color: white; border: none; cursor: pointer;" onclick="sendOrder()">Submit Order</button>
+
+        <h3 style="margin-top: 30px;">4. Transaction Log</h3>
+        <div id="log" style="background: #222; color: #00ff00; font-family: monospace; padding: 15px; height: 150px; overflow-y: auto; font-size: 13px;">
+            Waiting for action...
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

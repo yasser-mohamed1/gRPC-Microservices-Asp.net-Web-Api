@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package OrderingService.Protos;
+
+option csharp_namespace = "OrderingService.Protos";
+
+service OrderingGrpcService {
+    rpc SubmitOrder (OrderGrpcRequest) returns (OrderGrpcResponse);
+}
+
+message OrderGrpcRequest {
+    int32 userId = 1;
+    int32 totalPrice = 2;
+    repeated OrderItem items = 3;
+}
+
+message OrderItem {
+    string itemId = 1;
+    int32 quantity = 2;
+}
+
+message OrderGrpcResponse {
+    bool success = 1;
+    string message = 2;
+}

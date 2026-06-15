@@ -18,7 +18,7 @@ namespace OrderingService.Controllers
 
         public OrderController()
         {
-            _paymentChannel = GrpcChannel.ForAddress("https://localhost:7134"); // replace with your service ip address
+            _paymentChannel = GrpcChannel.ForAddress("https://localhost:7134");
             _inventoryChannel = GrpcChannel.ForAddress("https://localhost:7075");
         }
 
